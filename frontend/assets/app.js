@@ -174,9 +174,12 @@ $('#chat-form').addEventListener('submit', async event => {
     const citations = result.sources?.length ? `<details class="source-drawer"><summary>Evidence · ${result.sources.length} ${result.sources.length === 1 ? 'source passage' : 'source passages'}</summary>${result.sources.map(s => `<div class="citation"><span class="citation-num">${s.index}</span><span><strong>${esc(s.name)}${s.page ? ` · page ${s.page}` : ''}</strong><p>${esc(s.excerpt)}${s.excerpt.length >= 300 ? '…' : ''}</p></span></div>`).join('')}</details>` : '';
     pending.innerHTML = `<div class="assistant-badge">✳</div><div class="answer-body">${markdown(result.answer)}${citations}</div>`;
   } catch (error) {
-    const selectedProvider = $('#provider-name').textContent;
-    const hint = selectedProvider === 'Local models' ? 'Make sure Ollama is running and both models are installed.' : selectedProvider === 'Cloudflare AI' ? 'Check your Cloudflare credentials and daily Workers AI usage.' : 'Check your Hugging Face token, inference provider settings, and remaining credits.';
-    pending.innerHTML = `<div class="assistant-badge">✳</div><div class="answer-body"><p>${esc(error.message)}</p><p>${esc(hint)}</p></div>`;
+    const message = error.message.toLowerCase();
+    let hint = '';
+    if (message.includes('cloudflare workers ai')) hint = 'Check your Cloudflare credentials and daily Workers AI usage.';
+    else if (message.includes('hugging face') || message.includes('inference providers')) hint = 'Check your Hugging Face token, inference provider settings, and remaining credits.';
+    else if (message.includes('ollama')) hint = 'Make sure Ollama is running and both models are installed.';
+    pending.innerHTML = `<div class="assistant-badge">✳</div><div class="answer-body"><p>${esc(error.message)}</p>${hint ? `<p>${esc(hint)}</p>` : ''}</div>`;
   } finally { $('#send-button').disabled = false; pending.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
 });
 

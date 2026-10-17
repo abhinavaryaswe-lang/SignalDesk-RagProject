@@ -84,7 +84,8 @@ def search_chunks(query_vector, limit):
             cur.execute("""SELECT c.content,c.page,d.name,1-(c.embedding <=> %s::extensions.vector) AS score
                            FROM document_chunks c JOIN documents d ON d.id=c.document_id
                            ORDER BY c.embedding <=> %s::extensions.vector LIMIT %s""", (vector, vector, limit))
-            return [dict(zip(("content", "page", "name", "score"), r)) for r in cur.fetchall()]
+            # _pg() uses psycopg's dict_row factory, so rows are mappings rather than tuples.
+            return [dict(r) for r in cur.fetchall()]
     import math
     with _sqlite() as conn:
         rows = conn.execute("SELECT c.content,c.page,d.name,c.embedding FROM document_chunks c JOIN documents d ON d.id=c.document_id").fetchall()
