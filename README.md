@@ -52,6 +52,28 @@ To use hosted Hugging Face inference instead, set `LLM_PROVIDER=huggingface`, pr
 
 Cloudflare Workers AI currently provides 10,000 free Neurons per day, resetting at 00:00 UTC; usage above that allowance fails on the Free plan. The selected Llama 3.2 3B and BGE Small models are listed in Cloudflare's current model catalog. See [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/), [Llama 3.2 3B](https://developers.cloudflare.com/workers-ai/models/@cf/meta/llama-3.2-3b-instruct/), and [BGE Small](https://developers.cloudflare.com/workers-ai/models/@cf/baai/bge-small-en-v1.5/). Render Free services sleep after 15 minutes idle and can take about a minute to wake up. Their local filesystem is ephemeral, so production deployment should set `DATABASE_URL` to Supabase; uploaded documents and vectors then survive restarts. Supabase free databases have a 500 MB database-size quota and can pause when inactive.
 
+## Deploy on Vercel + Supabase
+
+Vercel supports this project's FastAPI entry point at `app/main.py`. The included `vercel.json` sets a 60-second function duration for requests to the hosted AI provider. Vercel Functions limit request bodies to 4.5 MB, so configure the app's file upload limit below that size.
+
+1. Create a Supabase project and run [`supabase/schema.sql`](supabase/schema.sql) in its SQL Editor.
+2. Copy the Supabase Postgres connection string. Use the Session Pooler connection string if your network cannot reach the direct database address.
+3. Push the project to GitHub, then in Vercel choose **Add New → Project** and import the repository. Leave the framework preset and build command on automatic detection; this is a Python FastAPI project, not a Node frontend build.
+4. In Vercel project **Settings → Environment Variables**, add these for **Production** (and Preview if desired):
+
+   ```dotenv
+   LLM_PROVIDER=cloudflare
+   CLOUDFLARE_ACCOUNT_ID=your_account_id
+   CLOUDFLARE_API_TOKEN=your_workers_ai_token
+   DATABASE_URL=your_supabase_postgres_connection_string
+   MAX_UPLOAD_MB=4
+   ```
+
+   Keep the Cloudflare token and database password private. Do not commit them in `.env` or enter them in source files.
+5. Redeploy after saving the variables. Open the deployed site, then check `/api/health`; it should report `provider_ready: true` and `storage: "supabase"`.
+
+Vercel's function filesystem is not persistent storage, so use Supabase for uploaded documents and vectors; the local SQLite database is only for development. Uploaded file requests must also fit Vercel's 4.5 MB total request limit, hence the 4 MB app limit. For details see Vercel's [FastAPI deployment guide](https://vercel.com/docs/frameworks/backend/fastapi) and [Function limits](https://vercel.com/docs/functions/limitations).
+
 ## Configuration
 
 | Variable | Default | Purpose |
