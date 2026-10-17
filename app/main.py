@@ -1,5 +1,6 @@
 import csv
 import io
+import logging
 import re
 import uuid
 from pathlib import Path
@@ -14,11 +15,21 @@ from .config import CHAT_MODEL, DATABASE_URL, EMBEDDING_MODEL, HF_TOKEN, LLM_PRO
 from .rag import answer_question, embed_texts, provider_status
 
 app = FastAPI(title="SignalDesk", description="Market demand intelligence grounded in your research library", version="1.0.0")
+DATABASE_STARTUP_ERROR = None
 
 
 @app.on_event("startup")
 def startup():
-    database.init_db()
+    global DATABASE_STARTUP_ERROR
+    try:
+        database.init_db()
+        DATABASE_STARTUP_ERROR = None
+    except Exception as exc:
+        message = str(exc)
+        if DATABASE_URL:
+            message = message.replace(DATABASE_URL, "[DATABASE_URL]")
+        DATABASE_STARTUP_ERROR = f"{type(exc).__name__}: {message[:300]}"
+        logging.error("Database initialization failed: %s", DATABASE_STARTUP_ERROR)
 
 
 class ChatRequest(BaseModel):
@@ -70,7 +81,8 @@ def health():
     status = provider_status()
     return {"ok": True, "model": CHAT_MODEL, "embedding_model": EMBEDDING_MODEL,
             "provider": LLM_PROVIDER, "provider_ready": status["ready"], "provider_status": status["detail"],
-            "hugging_face_configured": bool(HF_TOKEN), "storage": "supabase" if DATABASE_URL else "local"}
+            "hugging_face_configured": bool(HF_TOKEN), "storage": "supabase" if DATABASE_URL else "local",
+            "database_ready": DATABASE_STARTUP_ERROR is None, "database_error": DATABASE_STARTUP_ERROR}
 
 
 @app.get("/api/stats")
