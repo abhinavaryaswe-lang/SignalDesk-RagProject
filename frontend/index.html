@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#11131a" />
+  <meta name="description" content="SignalDesk turns your market research into source-grounded demand intelligence." />
+  <title>SignalDesk — Market intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="SignalDesk home"><span class="brand-mark"><i></i><i></i><i></i></span><span>signal<span class="brand-light">desk</span></span></a>
+      <div class="workspace"><div class="workspace-icon">N</div><div class="workspace-label"><strong>Northstar Labs</strong><span>Research workspace</span></div><span class="chevron">⌄</span></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span> Overview</button>
+        <button class="nav-item" data-view="research"><span class="nav-icon">◉</span> Research assistant</button>
+        <button class="nav-item" data-view="library"><span class="nav-icon">▤</span> Knowledge library <span class="nav-count" id="nav-doc-count">0</span></button>
+      </nav>
+      <div class="sidebar-bottom"><div class="plan-card"><div class="plan-glow"></div><span class="plan-label">YOUR WORKSPACE</span><strong>Market pulse, in focus.</strong><p>Ground every signal in the research you trust.</p><button class="plan-link" data-view="research">Start a conversation <span>↗</span></button></div><div class="profile"><div class="avatar">AS</div><div><strong>Abhinav Sharma</strong><span>Personal workspace</span></div><button aria-label="Account menu" class="dots">···</button></div></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar"><div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="crumb">Overview</strong></div><div class="top-actions"><span class="status-dot" id="connection-dot"></span><span class="connection-label" id="connection-label">Connecting</span><button class="icon-btn" aria-label="Help">?</button><div class="top-avatar">AS</div></div></header>
+      <section class="view active" id="view-overview">
+        <div class="welcome-row"><div><div class="eyebrow"><span class="sparkle">✳</span> MARKET INTELLIGENCE, GROUNDED</div><h1>Good morning, Abhinav<span class="period">.</span></h1><p class="subhead">Turn your market research into your next clear move.</p></div><div class="date-chip"><span class="date-icon">◷</span> Your research workspace</div></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-head"><span>Sources in your library</span><span class="stat-icon mint">▤</span></div><div class="stat-value" id="stat-documents">0</div><div class="stat-foot"><span class="live-dot"></span> Your grounded knowledge base</div></div>
+          <div class="stat-card"><div class="stat-head"><span>Research segments</span><span class="stat-icon lilac">⌘</span></div><div class="stat-value" id="stat-chunks">0</div><div class="stat-foot">Searchable passages from your files</div></div>
+          <div class="stat-card model-card"><div class="stat-head"><span>Intelligence engine</span><span class="stat-icon amber">✳</span></div><div class="model-name" id="provider-name">Local models</div><div class="stat-foot"><span class="model-mini-dot"></span><span id="stat-model">Start Ollama</span></div></div>
+        </div>
+        <div class="content-grid">
+          <section class="panel focus-panel"><div class="section-top"><div><div class="eyebrow muted">YOUR RESEARCH COPILOT</div><h2>Ask what the market is telling you.</h2><p>Explore demand patterns, compare customer needs, and uncover opportunities across your own research.</p></div><div class="orb"><span>✳</span></div></div>
+            <div class="prompt-list"><button class="prompt-card" data-prompt="What customer needs and pain points appear most often in my research?"><span class="prompt-icon mint">⌁</span><span><strong>Find the recurring needs</strong><small>Surface the problems customers keep raising</small></span><span class="prompt-arrow">↗</span></button><button class="prompt-card" data-prompt="What evidence in my sources suggests unmet demand or an underserved segment?"><span class="prompt-icon lilac">◌</span><span><strong>Spot an underserved segment</strong><small>Look for demand others may be missing</small></span><span class="prompt-arrow">↗</span></button><button class="prompt-card" data-prompt="Summarize the strongest evidence about market demand in my sources."><span class="prompt-icon amber">⌖</span><span><strong>Map the demand signals</strong><small>Get a source-backed market snapshot</small></span><span class="prompt-arrow">↗</span></button></div>
+            <button class="text-link" data-view="research">Open research assistant <span>→</span></button>
+          </section>
+          <section class="panel sources-panel"><div class="panel-heading"><div><div class="eyebrow muted">YOUR KNOWLEDGE BASE</div><h2>Recent sources</h2></div><button class="text-link compact" data-view="library">View library <span>→</span></button></div><div class="source-list" id="recent-list"><div class="empty-state"><div class="empty-icon">▤</div><strong>Your research starts here</strong><p>Add reports, customer interviews, or market notes to build your source library.</p><button class="button primary small" data-action="upload">Add your first source <span>＋</span></button></div></div></section>
+        </div>
+        <div class="bottom-note"><span class="lock-icon">♧</span><span><strong>Grounded in your material.</strong> Answers link back to the passages that informed them, so you can check the signal for yourself.</span><span class="note-right">PRIVATE BY DEFAULT</span></div>
+      </section>
+
+      <section class="view research-view" id="view-research">
+        <div class="research-heading"><div class="eyebrow"><span class="sparkle">✳</span> SIGNALDESK RESEARCH ASSISTANT</div><h1>Let's read between the lines<span class="period">.</span></h1><p class="subhead">Ask a question. Get an answer anchored in your market research.</p></div>
+        <div class="chat-stage" id="chat-stage"><div class="chat-welcome"><div class="chat-emblem">✳</div><div class="eyebrow muted">YOUR MARKET, IN CONTEXT</div><h2>What would you like to understand?</h2><p>I'll search your sources and show you the evidence behind every answer.</p><div class="chat-suggestions"><button data-prompt="What customer needs and pain points appear most often in my research?">Recurring customer needs <span>↗</span></button><button data-prompt="What evidence suggests underserved demand?">Underserved demand <span>↗</span></button><button data-prompt="Summarize the strongest market demand signals.">Strongest demand signals <span>↗</span></button></div></div></div>
+        <div class="composer-wrap"><form id="chat-form" class="composer"><textarea id="question" rows="1" placeholder="Ask about your market research…" maxlength="1800"></textarea><div class="composer-tools"><span><kbd>↵</kbd> to ask <span class="composer-sep">·</span> Answers include source citations</span><button class="send-btn" id="send-button" type="submit" aria-label="Send question">↑</button></div></form><div class="composer-caption">SignalDesk can make mistakes. Verify important findings with the original sources.</div></div>
+      </section>
+
+      <section class="view library-view" id="view-library">
+        <div class="library-heading"><div><div class="eyebrow"><span class="sparkle">✳</span> RESEARCH WORKSPACE</div><h1>Knowledge library<span class="period">.</span></h1><p class="subhead">Your team's source material, ready to explore.</p></div><button class="button primary" data-action="upload"><span>＋</span> Add sources</button></div>
+        <div class="library-toolbar"><div class="library-count"><strong id="library-count">0 sources</strong><span> are powering your market view</span></div><div class="search-field"><span>⌕</span><input id="filter-docs" placeholder="Find a source" /></div></div>
+        <div class="library-table"><div class="table-head"><span>SOURCE</span><span>TYPE</span><span>SEGMENTS</span><span>ADDED</span><span></span></div><div id="document-list" class="table-body"><div class="empty-library"><div class="empty-icon">▤</div><h3>A clearer view starts with good sources.</h3><p>Add a market report, customer feedback, or research notes to get started.</p><button class="button primary small" data-action="upload">Add your first source <span>＋</span></button></div></div></div>
+        <div class="supported-note"><span>ⓘ</span> Supports PDF, DOCX, TXT, MD, and CSV · Up to 15 MB per file</div>
+      </section>
+      <footer class="app-footer"><span>SignalDesk <span class="footer-dot">·</span> Market intelligence, grounded.</span><span>Built for curious teams <span class="footer-star">✳</span></span></footer>
+    </main>
+  </div>
+  <input type="file" id="file-input" accept=".pdf,.docx,.txt,.md,.csv" hidden />
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: signaldesk-rag
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: LLM_PROVIDER
+        value: cloudflare
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_API_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: MAX_UPLOAD_MB
+        value: 15
